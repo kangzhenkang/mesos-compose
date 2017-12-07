@@ -34,8 +34,8 @@ services:
       LIBPROCESS_IP: ${DOCKER_IP}
       MESOS_WORK_DIR: /tmp/mesos
     volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup
-      - /usr/local/bin/docker:/usr/bin/docker
+      - /sys:/sys
+      - /usr/bin/docker:/usr/bin/docker
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - zk
