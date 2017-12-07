@@ -40,23 +40,26 @@ services:
     depends_on:
       - zk
 
-  # slave-two:
-  #   image: mesosphere/mesos-slave:1.0.1-2.0.93.ubuntu1404
-  #   network_mode: host
-  #   pid: host
-  #   environment:
-  #     MESOS_MASTER: zk://127.0.0.1:2181/mesos
-  #     MESOS_CONTAINERIZERS: docker,mesos
-  #     MESOS_PORT: 5052
-  #     MESOS_RESOURCES: ports(*):[12000-12999]
-  #     MESOS_HOSTNAME: ${DOCKER_IP}
-  #     LIBPROCESS_IP: ${DOCKER_IP}
-  #   volumes:
-  #     - /sys/fs/cgroup:/sys/fs/cgroup
-  #     - /usr/local/bin/docker:/usr/bin/docker
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #   depends_on:
-  #     - zk
+  slave-two:
+    image: mesosphere/mesos-slave:1.0.1-2.0.93.ubuntu1404
+    network_mode: host
+    pid: host
+    environment:
+      MESOS_MASTER: zk://127.0.0.1:2181/mesos
+      MESOS_CONTAINERIZERS: docker,mesos
+      MESOS_PORT: 5052
+      MESOS_RESOURCES: ports(*):[11000-11999]
+      MESOS_HOSTNAME: ${DOCKER_IP}
+      LIBPROCESS_IP: ${DOCKER_IP}
+      MESOS_WORK_DIR: /tmp/mesos
+    volumes:
+      - /sys:/sys
+      - /usr/bin/docker:/usr/bin/docker
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/app:/app
+    depends_on:
+      - zk  
+
 
   marathon:
     image: mesosphere/marathon:v1.3.0
